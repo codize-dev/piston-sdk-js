@@ -3,8 +3,6 @@
  *
  * This example demonstrates how to handle various errors that can
  * occur when using the Piston SDK.
- *
- * Run with: bun examples/05-error-handling.ts
  */
 
 import {

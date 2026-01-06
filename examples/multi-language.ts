@@ -3,8 +3,6 @@
  *
  * This example demonstrates executing code in various programming
  * languages supported by Piston.
- *
- * Run with: bun examples/03-multi-language.ts
  */
 
 import { Piston } from "@codize/piston";

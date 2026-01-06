@@ -3,8 +3,6 @@
  *
  * This example demonstrates how to set resource constraints
  * (timeout, CPU time, memory limits) for code execution.
- *
- * Run with: bun examples/06-resource-constraints.ts
  */
 
 import { Piston } from "@codize/piston";

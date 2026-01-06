@@ -3,8 +3,6 @@
  *
  * This example demonstrates how Piston handles timeouts and
  * various process termination scenarios.
- *
- * Run with: bun examples/08-timeout-demo.ts
  */
 
 import { Piston } from "@codize/piston";

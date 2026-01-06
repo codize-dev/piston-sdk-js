@@ -3,8 +3,6 @@
  *
  * This example demonstrates how to execute code that spans
  * multiple files (modules/imports).
- *
- * Run with: bun examples/07-multiple-files.ts
  */
 
 import { Piston } from "@codize/piston";

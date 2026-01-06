@@ -3,8 +3,6 @@
  *
  * This example demonstrates the simplest usage of the Piston SDK
  * to execute a Python "Hello, World!" program.
- *
- * Run with: bun examples/01-hello-world.ts
  */
 
 import { Piston } from "@codize/piston";

@@ -3,8 +3,6 @@
  *
  * This example demonstrates executing compiled languages (C, C++, Rust)
  * and shows both compile and run stage results.
- *
- * Run with: bun examples/04-compiled-language.ts
  */
 
 import { Piston } from "@codize/piston";

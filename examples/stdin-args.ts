@@ -3,8 +3,6 @@
  *
  * This example demonstrates how to pass stdin and command-line
  * arguments to the executed code.
- *
- * Run with: bun examples/02-stdin-args.ts
  */
 
 import { Piston } from "@codize/piston";
