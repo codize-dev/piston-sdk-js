@@ -41,17 +41,17 @@ export type ExecutionStatus = "RE" | "SG" | "TO" | "OL" | "EL" | "XX";
  * - `SIGXFSZ` (25): File size limit exceeded (set by Isolate)
  */
 export type SignalName =
-  | "SIGHUP"
-  | "SIGINT"
-  | "SIGQUIT"
-  | "SIGILL"
-  | "SIGTRAP"
-  | "SIGABRT"
-  | "SIGFPE"
-  | "SIGKILL"
-  | "SIGSEGV"
-  | "SIGALRM"
-  | "SIGTERM"
-  | "SIGXCPU"
-  | "SIGXFSZ"
-  | (string & {});
+	| "SIGHUP"
+	| "SIGINT"
+	| "SIGQUIT"
+	| "SIGILL"
+	| "SIGTRAP"
+	| "SIGABRT"
+	| "SIGFPE"
+	| "SIGKILL"
+	| "SIGSEGV"
+	| "SIGALRM"
+	| "SIGTERM"
+	| "SIGXCPU"
+	| "SIGXFSZ"
+	| (string & {});

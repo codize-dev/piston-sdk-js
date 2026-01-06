@@ -1,42 +1,42 @@
 {
-  "name": "@codize/piston-sdk-js",
-  "version": "0.0.1",
-  "license": "MIT",
-  "description": "",
-  "author": "koki-develop <kou.pg.0131@gmail.com>",
-  "homepage": "https://github.com/codize-dev/piston-sdk-js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/codize-dev/piston-sdk-js.git"
-  },
-  "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    }
-  },
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "test": "vitest",
-    "lint": "biome check",
-    "format": "biome check --write",
-    "build": "tsc",
-    "clean": "rm -rf dist",
-    "prepublishOnly": "npm run clean && npm run build"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "sideEffects": false,
-  "devDependencies": {
-    "@biomejs/biome": "2.3.11",
-    "@types/node": "22.15.32",
-    "typescript": "5.9.3",
-    "vitest": "4.0.16"
-  }
+	"name": "@codize/piston-sdk-js",
+	"version": "0.0.1",
+	"license": "MIT",
+	"description": "",
+	"author": "koki-develop <kou.pg.0131@gmail.com>",
+	"homepage": "https://github.com/codize-dev/piston-sdk-js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/codize-dev/piston-sdk-js.git"
+	},
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"test": "vitest",
+		"lint": "biome check",
+		"format": "biome check --write",
+		"build": "tsc",
+		"clean": "rm -rf dist",
+		"prepublishOnly": "npm run clean && npm run build"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"sideEffects": false,
+	"devDependencies": {
+		"@biomejs/biome": "2.3.11",
+		"@types/node": "22.15.32",
+		"typescript": "5.9.3",
+		"vitest": "4.0.16"
+	}
 }
