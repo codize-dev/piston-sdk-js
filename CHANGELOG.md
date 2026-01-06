@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/codize-dev/piston-sdk-js/compare/v0.1.0...v0.2.0) (2026-01-06)
+
+
+### Features
+
+* **client:** add custom headers support for API requests ([5df4580](https://github.com/codize-dev/piston-sdk-js/commit/5df458092a2c86797df96bd45bca1f8b7ccd92b5))
+
 ## [0.1.0](https://github.com/codize-dev/piston-sdk-js/compare/v0.0.3...v0.1.0) (2026-01-06)
 
 
