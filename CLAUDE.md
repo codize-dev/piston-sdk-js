@@ -9,16 +9,16 @@ TypeScript SDK for the [Piston](https://github.com/engineer-man/piston) code exe
 ## Commands
 
 ```bash
-npm run build    # Build TypeScript (outputs to dist/)
-npm test         # Run tests with vitest (watch mode)
-npm run lint     # Check code with Biome
-npm run format   # Fix lint/format issues with Biome
+bun run build    # Build TypeScript (outputs to dist/)
+bun test         # Run tests with vitest (watch mode)
+bun run lint     # Check code with Biome
+bun run format   # Fix lint/format issues with Biome
 
 # Run single test file
-npx vitest src/client.spec.ts
+bunx vitest src/client.spec.ts
 
 # Run tests once (no watch)
-npx vitest run
+bunx vitest run
 ```
 
 ## Architecture
