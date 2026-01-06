@@ -67,7 +67,10 @@ export interface PistonOptions {
 	 * Custom fetch function (useful for testing).
 	 * @default globalThis.fetch
 	 */
-	fetch?: typeof fetch;
+	fetch?: (
+		input: string | URL | Request,
+		init?: RequestInit,
+	) => Promise<Response>;
 }
 
 /**
@@ -88,7 +91,10 @@ export interface PistonOptions {
  */
 export class Piston {
 	private readonly baseUrl: string;
-	private readonly fetch: typeof fetch;
+	private readonly fetch: (
+		input: string | URL | Request,
+		init?: RequestInit,
+	) => Promise<Response>;
 
 	/**
 	 * Create a Piston client.
