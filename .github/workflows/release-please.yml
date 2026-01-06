@@ -17,9 +17,27 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # TODO: add release-please job
+  release-please:
+    name: Release Please
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # for creating releases
+      pull-requests: write # for creating PRs
+      issues: write # for creating issues
+    outputs:
+      should-publish: ${{ steps.release-please.outputs.release_created }}
+    steps:
+      - uses: googleapis/release-please-action@16a9c90856f42705d54a6fda1823352bdc62cf38 # v4.4.0
+        id: release-please
+        with:
+          token: ${{ github.token }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
 
   publish:
+    needs: release-please
+    if: needs.release-please.outputs.should-publish == 'true'
     name: Publish
     timeout-minutes: 10
     runs-on: ubuntu-latest
