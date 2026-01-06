@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "license": "MIT",
   "description": "",
+  "author": "koki-develop <kou.pg.0131@gmail.com>",
+  "homepage": "https://github.com/codize-dev/piston-sdk-js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codize-dev/piston-sdk-js.git"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
