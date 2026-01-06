@@ -25,6 +25,7 @@
 		"test": "vitest",
 		"lint": "biome check",
 		"format": "biome check --write",
+		"typecheck": "tsc --noEmit",
 		"build": "tsc",
 		"clean": "rm -rf dist",
 		"prepublishOnly": "npm run clean && npm run build"
