@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.0](https://github.com/codize-dev/piston-sdk-js/compare/v0.0.3...v0.1.0) (2026-01-06)
+
+
+### Features
+
+* **client:** add runtimes API to retrieve available language runtimes ([f2b8a29](https://github.com/codize-dev/piston-sdk-js/commit/f2b8a29b6187aa79e06cdde2be0214030e5d4d6f))
+
 ## [0.0.3](https://github.com/codize-dev/piston-sdk-js/compare/v0.0.2...v0.0.3) (2026-01-06)
 
 
