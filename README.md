@@ -169,6 +169,34 @@ def greet(name):
 });
 ```
 
+### Custom Headers
+
+```typescript
+// Global headers (applied to all requests)
+const piston = new Piston("https://emkc.org/api/v2/piston", {
+  headers: {
+    Authorization: "Bearer your-api-key",
+  },
+});
+
+// Per-request headers (override global headers)
+const result = await piston.execute(
+  {
+    language: "python",
+    version: "3.x",
+    files: [{ content: 'print("Hello!")' }],
+  },
+  {
+    headers: { "X-Request-Id": "req-123" },
+  }
+);
+
+// Also works with runtimes()
+const runtimes = await piston.runtimes({
+  headers: { "X-Request-Id": "req-456" },
+});
+```
+
 ## Related Projects
 
 - [Piston](https://github.com/engineer-man/piston) - The code execution engine
