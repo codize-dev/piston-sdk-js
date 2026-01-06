@@ -167,7 +167,7 @@ export class Piston {
 			);
 		}
 
-		return this.handleResponse(response);
+		return this.handleExecuteResponse(response);
 	}
 
 	/**
@@ -266,9 +266,11 @@ export class Piston {
 	}
 
 	/**
-	 * Handle API response.
+	 * Handle execute API response.
 	 */
-	private async handleResponse(response: Response): Promise<ExecuteResponse> {
+	private async handleExecuteResponse(
+		response: Response,
+	): Promise<ExecuteResponse> {
 		if (response.ok) {
 			const raw = (await response.json()) as RawExecuteResponse;
 			return this.toExecuteResponse(raw);
