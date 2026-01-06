@@ -16,14 +16,17 @@ export type {
 	ErrorResponse,
 	// Request
 	ExecuteFile,
+	ExecuteOptions,
 	ExecuteRequest,
 	ExecuteResponse,
 	ExecutionStatus,
 	// Common
 	FileEncoding,
+	HttpHeaders,
 	RunConstraints,
 	// Response
 	RuntimeInfo,
+	RuntimesOptions,
 	SignalName,
 	StageResult,
 } from "./types/index.js";

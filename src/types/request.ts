@@ -1,4 +1,4 @@
-import type { FileEncoding } from "./common.js";
+import type { FileEncoding, HttpHeaders } from "./common.js";
 
 /**
  * A file to be executed.
@@ -112,4 +112,26 @@ export interface ExecuteRequest extends CompileConstraints, RunConstraints {
 	 * @default []
 	 */
 	args?: string[];
+}
+
+/**
+ * Options for the execute method.
+ */
+export interface ExecuteOptions {
+	/**
+	 * Additional headers for this request.
+	 * Merged with global headers (overriding duplicates).
+	 */
+	headers?: HttpHeaders;
+}
+
+/**
+ * Options for the runtimes method.
+ */
+export interface RuntimesOptions {
+	/**
+	 * Additional headers for this request.
+	 * Merged with global headers (overriding duplicates).
+	 */
+	headers?: HttpHeaders;
 }

@@ -7,9 +7,12 @@ import {
 } from "./errors.js";
 import type {
 	ErrorResponse,
+	ExecuteOptions,
 	ExecuteRequest,
 	ExecuteResponse,
+	HttpHeaders,
 	RuntimeInfo,
+	RuntimesOptions,
 	StageResult,
 } from "./types/index.js";
 
@@ -72,6 +75,11 @@ export interface PistonOptions {
 		input: string | URL | Request,
 		init?: RequestInit,
 	) => Promise<Response>;
+
+	/**
+	 * Default headers to include in all requests.
+	 */
+	headers?: HttpHeaders;
 }
 
 /**
@@ -96,6 +104,7 @@ export class Piston {
 		input: string | URL | Request,
 		init?: RequestInit,
 	) => Promise<Response>;
+	private readonly headers: HttpHeaders;
 
 	/**
 	 * Create a Piston client.
@@ -107,6 +116,7 @@ export class Piston {
 		// Remove trailing slashes
 		this.baseUrl = baseUrl.replace(/\/+$/, "");
 		this.fetch = options.fetch ?? globalThis.fetch;
+		this.headers = options.headers ?? {};
 	}
 
 	/**
@@ -145,19 +155,31 @@ export class Piston {
 	 *   runTimeout: 5000,
 	 *   runMemoryLimit: 67108864, // 64MB
 	 * });
+	 *
+	 * // With custom headers
+	 * const result = await piston.execute(
+	 *   { language: "python", version: "3.x", files: [{ content: "print('Hello!')" }] },
+	 *   { headers: { "X-Request-Id": "req-123" } }
+	 * );
 	 * ```
 	 */
-	async execute(request: ExecuteRequest): Promise<ExecuteResponse> {
+	async execute(
+		request: ExecuteRequest,
+		options?: ExecuteOptions,
+	): Promise<ExecuteResponse> {
 		const url = `${this.baseUrl}/execute`;
 		const rawRequest = this.toRawRequest(request);
+		const headers: HttpHeaders = {
+			"Content-Type": "application/json",
+			...this.headers,
+			...options?.headers,
+		};
 
 		let response: Response;
 		try {
 			response = await this.fetch(url, {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
+				headers,
 				body: JSON.stringify(rawRequest),
 			});
 		} catch (error) {
@@ -173,6 +195,7 @@ export class Piston {
 	/**
 	 * Retrieves a list of all available language runtimes.
 	 *
+	 * @param options - Request options
 	 * @returns Array of runtime information
 	 * @throws {PistonNetworkError} Network error
 	 * @throws {PistonServerError} Server error (HTTP 500)
@@ -181,18 +204,24 @@ export class Piston {
 	 * ```typescript
 	 * const runtimes = await piston.runtimes();
 	 * const pythonVersions = runtimes.filter(rt => rt.language === "python");
+	 *
+	 * // With custom headers
+	 * const runtimes = await piston.runtimes({ headers: { "X-Request-Id": "req-456" } });
 	 * ```
 	 */
-	async runtimes(): Promise<RuntimeInfo[]> {
+	async runtimes(options?: RuntimesOptions): Promise<RuntimeInfo[]> {
 		const url = `${this.baseUrl}/runtimes`;
+		const headers: HttpHeaders = {
+			Accept: "application/json",
+			...this.headers,
+			...options?.headers,
+		};
 
 		let response: Response;
 		try {
 			response = await this.fetch(url, {
 				method: "GET",
-				headers: {
-					Accept: "application/json",
-				},
+				headers,
 			});
 		} catch (error) {
 			throw new PistonNetworkError(

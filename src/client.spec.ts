@@ -595,4 +595,217 @@ describe("Piston", () => {
 			expect(error.message).toBe("HTTP 500: Internal Server Error");
 		});
 	});
+
+	describe("custom headers", () => {
+		const basicRequest: ExecuteRequest = {
+			language: "python",
+			version: "3.10.0",
+			files: [{ content: "print('hello')" }],
+		};
+
+		const mockRawResponse = {
+			language: "python",
+			version: "3.10.0",
+			run: {
+				stdout: "hello\n",
+				stderr: "",
+				output: "hello\n",
+				code: 0,
+				signal: null,
+				message: null,
+				status: null,
+				cpu_time: 10,
+				wall_time: 100,
+				memory: 1000000,
+			},
+		};
+
+		describe("global headers", () => {
+			it("should include global headers in execute requests", async () => {
+				const pistonWithHeaders = new Piston(
+					"https://example.com/api/v2/piston",
+					{
+						fetch: mockFetch,
+						headers: { Authorization: "Bearer token123" },
+					},
+				);
+
+				mockFetch.mockResolvedValue(
+					new Response(JSON.stringify(mockRawResponse), { status: 200 }),
+				);
+
+				await pistonWithHeaders.execute(basicRequest);
+
+				expect(mockFetch).toHaveBeenCalledWith(
+					expect.any(String),
+					expect.objectContaining({
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: "Bearer token123",
+						},
+					}),
+				);
+			});
+
+			it("should include global headers in runtimes requests", async () => {
+				const pistonWithHeaders = new Piston(
+					"https://example.com/api/v2/piston",
+					{
+						fetch: mockFetch,
+						headers: { Authorization: "Bearer token123" },
+					},
+				);
+
+				mockFetch.mockResolvedValue(
+					new Response(JSON.stringify([]), { status: 200 }),
+				);
+
+				await pistonWithHeaders.runtimes();
+
+				expect(mockFetch).toHaveBeenCalledWith(
+					expect.any(String),
+					expect.objectContaining({
+						headers: {
+							Accept: "application/json",
+							Authorization: "Bearer token123",
+						},
+					}),
+				);
+			});
+		});
+
+		describe("per-request headers", () => {
+			it("should include per-request headers in execute", async () => {
+				mockFetch.mockResolvedValue(
+					new Response(JSON.stringify(mockRawResponse), { status: 200 }),
+				);
+
+				await piston.execute(basicRequest, {
+					headers: { "X-Request-Id": "req-123" },
+				});
+
+				expect(mockFetch).toHaveBeenCalledWith(
+					expect.any(String),
+					expect.objectContaining({
+						headers: {
+							"Content-Type": "application/json",
+							"X-Request-Id": "req-123",
+						},
+					}),
+				);
+			});
+
+			it("should include per-request headers in runtimes", async () => {
+				mockFetch.mockResolvedValue(
+					new Response(JSON.stringify([]), { status: 200 }),
+				);
+
+				await piston.runtimes({ headers: { "X-Request-Id": "req-456" } });
+
+				expect(mockFetch).toHaveBeenCalledWith(
+					expect.any(String),
+					expect.objectContaining({
+						headers: {
+							Accept: "application/json",
+							"X-Request-Id": "req-456",
+						},
+					}),
+				);
+			});
+		});
+
+		describe("header merging", () => {
+			it("should override global headers with per-request headers", async () => {
+				const pistonWithHeaders = new Piston(
+					"https://example.com/api/v2/piston",
+					{
+						fetch: mockFetch,
+						headers: {
+							Authorization: "Bearer global-token",
+							"X-Custom": "global-value",
+						},
+					},
+				);
+
+				mockFetch.mockResolvedValue(
+					new Response(JSON.stringify(mockRawResponse), { status: 200 }),
+				);
+
+				await pistonWithHeaders.execute(basicRequest, {
+					headers: { Authorization: "Bearer request-token" },
+				});
+
+				expect(mockFetch).toHaveBeenCalledWith(
+					expect.any(String),
+					expect.objectContaining({
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: "Bearer request-token",
+							"X-Custom": "global-value",
+						},
+					}),
+				);
+			});
+
+			it("should allow overriding Content-Type via headers", async () => {
+				mockFetch.mockResolvedValue(
+					new Response(JSON.stringify(mockRawResponse), { status: 200 }),
+				);
+
+				await piston.execute(basicRequest, {
+					headers: { "Content-Type": "text/plain" },
+				});
+
+				expect(mockFetch).toHaveBeenCalledWith(
+					expect.any(String),
+					expect.objectContaining({
+						headers: expect.objectContaining({
+							"Content-Type": "text/plain",
+						}),
+					}),
+				);
+			});
+		});
+
+		describe("backward compatibility", () => {
+			it("should work without headers option in constructor", async () => {
+				const pistonDefault = new Piston("https://example.com/api/v2/piston", {
+					fetch: mockFetch,
+				});
+
+				mockFetch.mockResolvedValue(
+					new Response(JSON.stringify(mockRawResponse), { status: 200 }),
+				);
+
+				await pistonDefault.execute(basicRequest);
+
+				expect(mockFetch).toHaveBeenCalledWith(
+					expect.any(String),
+					expect.objectContaining({
+						headers: { "Content-Type": "application/json" },
+					}),
+				);
+			});
+
+			it("should work without options in execute", async () => {
+				mockFetch.mockResolvedValue(
+					new Response(JSON.stringify(mockRawResponse), { status: 200 }),
+				);
+
+				await piston.execute(basicRequest);
+
+				expect(mockFetch).toHaveBeenCalled();
+			});
+
+			it("should work without options in runtimes", async () => {
+				mockFetch.mockResolvedValue(
+					new Response(JSON.stringify([]), { status: 200 }),
+				);
+
+				await piston.runtimes();
+
+				expect(mockFetch).toHaveBeenCalled();
+			});
+		});
+	});
 });

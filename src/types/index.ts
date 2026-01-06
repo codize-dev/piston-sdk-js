@@ -1,12 +1,19 @@
 // Common types
-export type { ExecutionStatus, FileEncoding, SignalName } from "./common.js";
+export type {
+	ExecutionStatus,
+	FileEncoding,
+	HttpHeaders,
+	SignalName,
+} from "./common.js";
 
 // Request types
 export type {
 	CompileConstraints,
 	ExecuteFile,
+	ExecuteOptions,
 	ExecuteRequest,
 	RunConstraints,
+	RuntimesOptions,
 } from "./request.js";
 
 // Response types
