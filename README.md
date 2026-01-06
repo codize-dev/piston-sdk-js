@@ -39,6 +39,20 @@ console.log(result.run.stdout); // "Hello, World!\n"
 
 ## Usage
 
+### List Available Runtimes
+
+```typescript
+import { Piston } from "@codize/piston";
+
+const piston = new Piston("https://emkc.org/api/v2/piston");
+
+const runtimes = await piston.runtimes();
+
+for (const runtime of runtimes) {
+  console.log(`${runtime.language} ${runtime.version}`);
+}
+```
+
 ### Basic Execution
 
 ```typescript
