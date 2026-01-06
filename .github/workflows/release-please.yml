@@ -1,0 +1,46 @@
+name: Release Please
+
+defaults:
+  run:
+    shell: bash
+
+permissions: {}
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # TODO: add release-please job
+
+  publish:
+    name: Publish
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # for trusted publishing
+    steps:
+      # setup
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@146a28175021df8ca24f8ee1828cc2a60f980bd5 # v3.5.1
+
+      # install dependencies
+      - uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+          restore-keys: ${{ runner.os }}-bun-
+      - run: bun install --frozen-lockfile
+
+      # publish
+      - run: echo 'registry=https://registry.npmjs.org' > .npmrc
+      - run: npm publish --access public
