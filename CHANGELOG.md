@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/codize-dev/piston-sdk-js/compare/v0.0.2...v0.0.3) (2026-01-06)
+
+
+### Patches
+
+* **client:** specify fetch type signature explicitly ([727883b](https://github.com/codize-dev/piston-sdk-js/commit/727883bb1480289bec6489b6c7efb684dc6be26a))
+
 ## [0.0.2](https://github.com/codize-dev/piston-sdk-js/compare/v0.0.1...v0.0.2) (2026-01-06)
 
 
