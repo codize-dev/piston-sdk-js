@@ -200,7 +200,7 @@ const runtimes = await piston.runtimes({
 ## Related Projects
 
 - [Piston](https://github.com/engineer-man/piston) - The code execution engine
-- [Piston API Documentation](https://github.com/engineer-man/piston#api-documentation)
+- [Piston API Documentation](https://piston.readthedocs.io/en/latest/)
 
 ## License
 
