@@ -6,7 +6,12 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"includes": ["**", "!!**/dist", "!!**/.claude"]
+		"includes": [
+			"**",
+			"!!**/dist",
+			"!!**/.claude",
+			"!!.release-please-manifest.json"
+		]
 	},
 	"formatter": {
 		"enabled": true,
