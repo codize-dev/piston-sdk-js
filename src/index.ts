@@ -22,7 +22,8 @@ export type {
 	// Common
 	FileEncoding,
 	RunConstraints,
-	SignalName,
 	// Response
+	RuntimeInfo,
+	SignalName,
 	StageResult,
 } from "./types/index.js";

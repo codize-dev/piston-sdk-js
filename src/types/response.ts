@@ -94,3 +94,30 @@ export interface ErrorResponse {
 	 */
 	message: string;
 }
+
+/**
+ * Runtime information returned by the runtimes API.
+ */
+export interface RuntimeInfo {
+	/**
+	 * Language name (e.g., "python", "javascript", "rust").
+	 */
+	language: string;
+
+	/**
+	 * Version in SemVer format (e.g., "3.12.0").
+	 */
+	version: string;
+
+	/**
+	 * Language aliases that can be used in execute requests.
+	 */
+	aliases: string[];
+
+	/**
+	 * Parent package name for multi-language packages.
+	 * Only present when the package provides multiple languages.
+	 * @example "node" for JavaScript, "gcc" for C/C++
+	 */
+	runtime?: string;
+}

@@ -9,6 +9,7 @@ import type {
 	ErrorResponse,
 	ExecuteRequest,
 	ExecuteResponse,
+	RuntimeInfo,
 	StageResult,
 } from "./types/index.js";
 
@@ -170,6 +171,40 @@ export class Piston {
 	}
 
 	/**
+	 * Retrieves a list of all available language runtimes.
+	 *
+	 * @returns Array of runtime information
+	 * @throws {PistonNetworkError} Network error
+	 * @throws {PistonServerError} Server error (HTTP 500)
+	 *
+	 * @example
+	 * ```typescript
+	 * const runtimes = await piston.runtimes();
+	 * const pythonVersions = runtimes.filter(rt => rt.language === "python");
+	 * ```
+	 */
+	async runtimes(): Promise<RuntimeInfo[]> {
+		const url = `${this.baseUrl}/runtimes`;
+
+		let response: Response;
+		try {
+			response = await this.fetch(url, {
+				method: "GET",
+				headers: {
+					Accept: "application/json",
+				},
+			});
+		} catch (error) {
+			throw new PistonNetworkError(
+				`Failed to connect to Piston API: ${error instanceof Error ? error.message : String(error)}`,
+				error instanceof Error ? error : undefined,
+			);
+		}
+
+		return this.handleRuntimesResponse(response);
+	}
+
+	/**
 	 * Convert SDK request (camelCase) to API request (snake_case).
 	 */
 	private toRawRequest(request: ExecuteRequest): RawExecuteRequest {
@@ -253,6 +288,33 @@ export class Piston {
 				throw new PistonValidationError(errorMessage);
 			case 415:
 				throw new PistonContentTypeError(errorMessage);
+			case 500:
+				throw new PistonServerError(errorMessage);
+			default:
+				throw new PistonError(`Unexpected error: ${errorMessage}`);
+		}
+	}
+
+	/**
+	 * Handle runtimes API response.
+	 */
+	private async handleRuntimesResponse(
+		response: Response,
+	): Promise<RuntimeInfo[]> {
+		if (response.ok) {
+			return (await response.json()) as RuntimeInfo[];
+		}
+
+		// Handle error responses
+		let errorMessage: string;
+		try {
+			const errorBody = (await response.json()) as ErrorResponse;
+			errorMessage = errorBody.message;
+		} catch {
+			errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+		}
+
+		switch (response.status) {
 			case 500:
 				throw new PistonServerError(errorMessage);
 			default:

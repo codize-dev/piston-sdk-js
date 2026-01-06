@@ -462,4 +462,137 @@ describe("Piston", () => {
 			);
 		});
 	});
+
+	describe("runtimes", () => {
+		it("should send GET request to /runtimes endpoint", async () => {
+			mockFetch.mockResolvedValue(
+				new Response(JSON.stringify([]), { status: 200 }),
+			);
+
+			await piston.runtimes();
+
+			expect(mockFetch).toHaveBeenCalledWith(
+				"https://example.com/api/v2/piston/runtimes",
+				expect.objectContaining({
+					method: "GET",
+					headers: { Accept: "application/json" },
+				}),
+			);
+		});
+
+		it("should return array of runtime info", async () => {
+			const mockRuntimes = [
+				{
+					language: "python",
+					version: "3.12.0",
+					aliases: ["py", "py3", "python3"],
+				},
+				{
+					language: "rust",
+					version: "1.65.0",
+					aliases: ["rs"],
+				},
+			];
+
+			mockFetch.mockResolvedValue(
+				new Response(JSON.stringify(mockRuntimes), { status: 200 }),
+			);
+
+			const result = await piston.runtimes();
+
+			expect(result).toEqual(mockRuntimes);
+			expect(result).toHaveLength(2);
+			expect(result[0]?.language).toBe("python");
+			expect(result[1]?.aliases).toContain("rs");
+		});
+
+		it("should handle empty runtimes array", async () => {
+			mockFetch.mockResolvedValue(
+				new Response(JSON.stringify([]), { status: 200 }),
+			);
+
+			const result = await piston.runtimes();
+
+			expect(result).toEqual([]);
+			expect(result).toHaveLength(0);
+		});
+
+		it("should handle runtime field for multi-language packages", async () => {
+			const mockRuntimes = [
+				{
+					language: "javascript",
+					version: "24.12.0",
+					aliases: ["node-javascript", "node-js", "js"],
+					runtime: "node",
+				},
+				{
+					language: "c",
+					version: "10.2.0",
+					aliases: ["gcc"],
+					runtime: "gcc",
+				},
+				{
+					language: "c++",
+					version: "10.2.0",
+					aliases: ["cpp", "g++"],
+					runtime: "gcc",
+				},
+			];
+
+			mockFetch.mockResolvedValue(
+				new Response(JSON.stringify(mockRuntimes), { status: 200 }),
+			);
+
+			const result = await piston.runtimes();
+
+			expect(result[0]?.runtime).toBe("node");
+			expect(result[1]?.runtime).toBe("gcc");
+			expect(result[2]?.runtime).toBe("gcc");
+		});
+
+		it("should throw PistonNetworkError on fetch failure", async () => {
+			mockFetch.mockRejectedValue(new Error("Network error"));
+
+			const error = await piston.runtimes().catch((e) => e);
+			expect(error).toBeInstanceOf(PistonNetworkError);
+			expect(error.message).toBe(
+				"Failed to connect to Piston API: Network error",
+			);
+		});
+
+		it("should throw PistonServerError on HTTP 500", async () => {
+			mockFetch.mockResolvedValue(
+				new Response(JSON.stringify({ message: "Internal server error" }), {
+					status: 500,
+				}),
+			);
+
+			await expect(piston.runtimes()).rejects.toThrow(PistonServerError);
+		});
+
+		it("should throw PistonError on unexpected HTTP status", async () => {
+			mockFetch.mockResolvedValue(
+				new Response(JSON.stringify({ message: "Service unavailable" }), {
+					status: 503,
+				}),
+			);
+
+			const error = await piston.runtimes().catch((e) => e);
+			expect(error).toBeInstanceOf(PistonError);
+			expect(error.message).toBe("Unexpected error: Service unavailable");
+		});
+
+		it("should handle error response without JSON body", async () => {
+			mockFetch.mockResolvedValue(
+				new Response("Internal Server Error", {
+					status: 500,
+					statusText: "Internal Server Error",
+				}),
+			);
+
+			const error = await piston.runtimes().catch((e) => e);
+			expect(error).toBeInstanceOf(PistonServerError);
+			expect(error.message).toBe("HTTP 500: Internal Server Error");
+		});
+	});
 });

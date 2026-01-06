@@ -13,5 +13,6 @@ export type {
 export type {
 	ErrorResponse,
 	ExecuteResponse,
+	RuntimeInfo,
 	StageResult,
 } from "./response.js";
