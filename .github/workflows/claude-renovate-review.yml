@@ -30,8 +30,7 @@ jobs:
           claude-code-oauth-token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           claude-code-settings: |
             {
-              "model": "opus",
-              "language": "Japanese"
+              "model": "opus"
             }
           allowed-tools: |
             WebSearch
