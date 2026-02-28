@@ -238,8 +238,8 @@ describe("Piston", () => {
 			expect(result.compile).toBeDefined();
 			expect(result.compile?.cpuTime).toBe(1000);
 			expect(result.compile?.wallTime).toBe(1200);
-			expect(result.run.cpuTime).toBe(5);
-			expect(result.run.wallTime).toBe(50);
+			expect(result.run?.cpuTime).toBe(5);
+			expect(result.run?.wallTime).toBe(50);
 		});
 
 		it("should handle runtime error status", async () => {
@@ -270,8 +270,8 @@ describe("Piston", () => {
 				files: [{ content: "print(undefined)" }],
 			});
 
-			expect(result.run.status).toBe("RE");
-			expect(result.run.code).toBe(1);
+			expect(result.run?.status).toBe("RE");
+			expect(result.run?.code).toBe(1);
 		});
 
 		it("should handle timeout status", async () => {
@@ -302,9 +302,9 @@ describe("Piston", () => {
 				files: [{ content: "while True: pass" }],
 			});
 
-			expect(result.run.status).toBe("TO");
-			expect(result.run.signal).toBe("SIGKILL");
-			expect(result.run.code).toBeNull();
+			expect(result.run?.status).toBe("TO");
+			expect(result.run?.signal).toBe("SIGKILL");
+			expect(result.run?.code).toBeNull();
 		});
 
 		it("should handle signal termination", async () => {
@@ -347,8 +347,8 @@ describe("Piston", () => {
 				files: [{ content: "int main() { int *p = 0; *p = 1; }" }],
 			});
 
-			expect(result.run.status).toBe("SG");
-			expect(result.run.signal).toBe("SIGSEGV");
+			expect(result.run?.status).toBe("SG");
+			expect(result.run?.signal).toBe("SIGSEGV");
 		});
 	});
 

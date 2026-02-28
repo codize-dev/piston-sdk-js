@@ -82,7 +82,7 @@ export interface ExecuteResponse {
 	 * Run stage result.
 	 * Always present.
 	 */
-	run: StageResult;
+	run?: StageResult;
 }
 
 /**

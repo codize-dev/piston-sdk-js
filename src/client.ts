@@ -60,7 +60,7 @@ interface RawExecuteResponse {
 	language: string;
 	version: string;
 	compile?: RawStageResult;
-	run: RawStageResult;
+	run?: RawStageResult;
 }
 
 /**
@@ -284,11 +284,14 @@ export class Piston {
 		const result: ExecuteResponse = {
 			language: raw.language,
 			version: raw.version,
-			run: this.toStageResult(raw.run),
 		};
 
 		if (raw.compile) {
 			result.compile = this.toStageResult(raw.compile);
+		}
+
+		if (raw.run) {
+			result.run = this.toStageResult(raw.run);
 		}
 
 		return result;
