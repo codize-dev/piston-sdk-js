@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/codize-dev/piston-sdk-js/compare/v0.2.0...v0.2.1) (2026-02-28)
+
+
+### Patches
+
+* make run field optional in ExecuteResponse to match compile ([af26549](https://github.com/codize-dev/piston-sdk-js/commit/af26549a3ea4849df2a5e32a3df9b9a5ab87bf05))
+
 ## [0.2.0](https://github.com/codize-dev/piston-sdk-js/compare/v0.1.0...v0.2.0) (2026-01-06)
 
 

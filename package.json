@@ -1,6 +1,6 @@
 {
 	"name": "@codize/piston",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"license": "MIT",
 	"description": "TypeScript SDK for the Piston code execution API.",
 	"author": "koki-develop <kou.pg.0131@gmail.com>",
