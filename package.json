@@ -32,7 +32,7 @@
 		"prepublishOnly": "npm run clean && npm run build"
 	},
 	"engines": {
-		"node": ">=18"
+		"node": "v25.7.0"
 	},
 	"sideEffects": false,
 	"devDependencies": {
